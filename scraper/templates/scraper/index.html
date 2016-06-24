@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Scrapity</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'scraper/css/bootstrap.min.css' %}" type = "text/css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1>Sup</h1>
+    <form method="POST" action="" id="scrape">
+      {% csrf_token %}
+      <input type="submit" name="urls" value="SCRAPE!"/>
+    </form>
+    <div id="myOutput"></div>
+  <script src="{% static 'scraper/js/main.js' %}"></script>
+  </body>
+
+</html>
