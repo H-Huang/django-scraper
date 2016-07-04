@@ -1,23 +1,23 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-import scraper.scrapefunction
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
+
+from scraper import scrapefunction
 import json
 
 # Create your views here.
-def index(request):
-    print("index")
-    return render(request, 'scraper/index.html')
+def index(request, urls=None):
+    print("In index view")
+    return render(request, 'scraper/index.html', {"urls": urls })
 
 def output(request):
-    print("output")
+    print("In output view")
     if request.method == 'POST':
         body_unicode = request.body.decode('utf-8')
         urls = body_unicode
-        print("here are the urls")
-        print(urls)
-        print("working?")
-        scraped_data = scraper.scrapefunction.scrape(urls)
+        print("here are the urls:")
+        scraped_data = scrapefunction.scrape(urls)
         return HttpResponse(
-            scraped_data,
-            content_type="application/json"
+           scraped_data,
+           content_type="application/json"
         )

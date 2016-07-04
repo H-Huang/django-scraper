@@ -8,11 +8,16 @@
   </head>
   <body>
     <h1>Sup</h1>
-    <form method="POST" action="" id="scrape">
+    <form method="POST" action="">
       {% csrf_token %}
-      <input type="submit" name="urls" value="SCRAPE!"/>
+      <div class="input_fields_wrap">
+          <button class="add_field_button">Add More URLS</button>
+          <div><input class="urlForms" type="text" name="mytext[]"></div>
+      </div>
+      <input type="submit" value="SCRAPE!" id="scrape"/>
     </form>
     <div id="myOutput"></div>
+
   <script src="{% static 'scraper/js/main.js' %}"></script>
   </body>
 

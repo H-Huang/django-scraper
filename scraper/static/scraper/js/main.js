@@ -1,13 +1,45 @@
 $( document ).ready(function() {
+  //for multiple URLS
+  var max_fields      = 10; //maximum input boxes allowed
+  var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+  var add_button      = $(".add_field_button"); //Add button ID
+
+  var x = 1; //initlal text box count
+  $(add_button).click(function(e){ //on add input button click
+      e.preventDefault();
+      if(x < max_fields){ //max input box allowed
+          x++; //text box increment
+          $(wrapper).append('<div><input class="urlForms" type="text" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
+          if(x == max_fields){
+            $(wrapper).append('<div><p id="swag">dude...stop...you can only put 10 URLS</p></div>'); //add input box
+          }
+      }
+  });
+
+  $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+      e.preventDefault();
+      $(this).parent('div').remove();
+      x--;
+      $("#swag").parent('div').remove();
+  })
+
   // Submit post on submit
-  $('#scrape').on('submit', function(event){
+  $('#scrape').on('click', function(event){
+
       event.preventDefault();
-      console.log("form submitted!")  // sanity check
-      urls = ["http://dailybruin.com/2016/06/19/yamato-closes-after-nine-years-of-service-in-westwood-village/"]
-      urls = JSON.stringify(urls);
+      console.log(x)
+      var urls = [];
+      $(".urlForms").each(function(){
+        url = $(this)[0].value;
+        console.log($(this));
+        urls.push(url);
+      });
       console.log(urls)
+      console.log("form submitted!")  // sanity check
+      var urls = JSON.stringify(urls);
+      console.log(urls);
       $.ajax({
-        url : "/output/", // the endpoint
+        url : "output", // the endpoint
         type : "POST", // http method
         data : urls, // data sent with the post request
 
@@ -15,7 +47,9 @@ $( document ).ready(function() {
         success : function(json) {
             $('#post-text').val(''); // remove the value from the input
             console.log(json); // log the returned json to the console
-            $("#myOutput").replaceWith(json[0].content);
+            for (var i = 0; i < x; i++){
+              $("#myOutput").replaceWith(json[i].content);
+            }
             console.log("success"); // another sanity check
         },
 
@@ -26,7 +60,6 @@ $( document ).ready(function() {
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
         }
       });
-
   });
 
   //FOR THE CSRF

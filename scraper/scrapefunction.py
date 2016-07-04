@@ -8,16 +8,16 @@ import re
 def scrape(urls):
     print("in scrape")
     urls = json.loads(urls)
-    print(urls)
+    # print(urls)
     obj = []
     count = 1
 
     for url in urls:
         try:
             print("in loop")
-            print(url)
+            #print(url)
             r = requests.get(url)
-            print(r)
+            #print(r)
             soup = BeautifulSoup(r.content, "html.parser")
 
             #headline
